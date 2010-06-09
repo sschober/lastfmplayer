@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 # Prerequisites:
 # 	* Get and setup http://www.red-bean.com/~decklin/software/lastfmsubmitd/
 # 	* perl -MCPAN -e 'install MP3::Info' (check your distro for perl-MP3-Info package first)
@@ -27,6 +27,23 @@ for f; do
 			read time;
 			read artist;
 			read album;
+			read title;
+			[ "$album" = "1" ] && album=""
+			echo "## Last.FM : -l \"$time\" -a \"$artist\" -b \"$album\" --title \"$title\""
+			/usr/lib/lastfmsubmitd/lastfmsubmit -e utf8 \
+				-l "$time" -a "$artist" -b "$album" --title "$title"
+		}
+		;;
+	*.m4a)
+		musictag --plugin "M4A" \
+		  --printinfo "$f" \
+		|  grep "ALBUM\|SECS\|ARTIST\|TITLE"  \
+		|  sed -e "s;';;g" -e "s;.*=>\(.*\),$;\1;" \
+		|
+		{
+			read album;
+			read artist;
+			read time;
 			read title;
 			[ "$album" = "1" ] && album=""
 			echo "## Last.FM : -l \"$time\" -a \"$artist\" -b \"$album\" --title \"$title\""
