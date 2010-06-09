@@ -1,0 +1,22 @@
+lastfmplayer
+============
+
+A simple shell wrapper around mplayer that scrobbles to last.fm.
+
+Requirements
+------------
+
+- lastfmsubmitd
+- perl
+  - MP3::Info       (mp3 support)
+  - Music::Tag::M4A (m4a support)
+
+Usage
+-----
+
+Just call this script as you would call mplayer.
+
+Song info will be submitted after you finish listening to the song;
+if you are SKIPPING a track and don't want it to appear, press
+Ctrl-C in mplayer - it will skip to the next track without
+scrobbling.
