@@ -20,3 +20,14 @@ Song info will be submitted after you finish listening to the song;
 if you are SKIPPING a track and don't want it to appear, press
 Ctrl-C in mplayer - it will skip to the next track without
 scrobbling.
+
+Notes
+-----
+
+The original author of this script is:
+
+[xpasky](http://www.last.fm/user/xpasky)
+
+See also this thread in the last.fm forums:
+
+[Simple shell script wrapper for mplayer + last.fm](http://www.last.fm/group/Mplayer/forum/17668/_/376917)
