@@ -8,7 +8,7 @@ Requirements
 
 - lastfmsubmitd
 - perl
-  - MP3::Info       (mp3 support)
+  - Music::Tag::MP3 (mp3 support)
   - Music::Tag::M4A (m4a support)
 
 Usage
