@@ -32,7 +32,7 @@
 # in mplayer - it will skip to the next track without scrobbling.
 
 # ([ -f var/run/lastfm/lastfmsubmitd.pid ] && kill -0 `cat /var/run/lastfm/lastfmsubmitd.pid` 2>&1) || lastfmsubmitd
-[ "$LASTFM_PLAYER" ] || LASTFM_PLAYER=mplayer
+[ "$LASTFM_PLAYER" ] || LASTFM_PLAYER=/usr/bin/mplayer
 [ "$MUSICTAG" ] || MUSICTAG=musictag
 [ "$LASTFM_SUBMIT" ] || LASTFM_SUBMIT=/usr/lib/lastfmsubmitd/lastfmsubmit
 
@@ -42,20 +42,23 @@ scrobble () {
 	read time;
 	read title;
 	[ "$album" = "1" ] && album=""
-	echo "## Last.FM : -l \"$time\" -a \"$artist\" -b \"$album\" --title \"$title\""
+    seconds=$(echo "$time / 1000" | bc)
+
+	echo "## Last.FM : -l \"$seconds\" -a \"$artist\" -b \"$album\" --title \"$title\""
+
 	$LASTFM_SUBMIT -e utf8 \
-		-l "$time" -a "$artist" -b "$album" --title "$title"
+		-l "$seconds" -a "$artist" -b "$album" --title "$title"
 }
 
 for f; do
-	$LASTFM_PLAYER "$f" || continue
-
 	case "$f" in
 	*.mp3 | *.m4a)
 		$MUSICTAG --printinfo "$f" \
-		|  grep "ALBUM\|SECS\|ARTIST\|TITLE"  \
+		|  grep "ALBUM\|DURATION\|ARTIST\|TITLE"  \
 		|  sed -e "s;';;g" -e "s;.*=>\(.*\),$;\1;" \
 		|  scrobble
 		;;
 	esac
+
+	$LASTFM_PLAYER "$f" || continue
 done
